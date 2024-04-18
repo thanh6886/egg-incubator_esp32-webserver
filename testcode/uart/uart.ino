@@ -43,7 +43,7 @@ void loop() {
            }
       }
  
-          Serial2.write("ABC\n");
+          Serial2.print("ABC\n");
           
           delay(2000);
     

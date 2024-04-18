@@ -3,31 +3,34 @@
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 #include <Arduino_JSON.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+   #define RXD2 16
+  #define TXD2 17
+
+
+#if CONFIG_FREERTOS_UNICORE
+static const BaseType_t app_cpu = 0;
+#else
+static const BaseType_t app_cpu = 1;
+#endif
+
 
 // const char* ssid = "béthu";
 // const char* password = "88888888";
-
-
 const char* ssid = "TP-LINK_E481B4";
 const char* password = "94902518";
-
 
 const char* mqtt_server = "5becba34c368460ba7657c804a6e4eed.s2.eu.hivemq.cloud";
 const char* mqtt_username = "bé_thu";
 const char* mqtt_password = "Thanh2412";
 const int mqtt_port = 8883;
 
-
-
-
-int temperature , humidity;
-int relay;
-
-
 JSONVar data;
 WiFiClientSecure esp_client;
-
 PubSubClient client(esp_client);
+
 
 
 static const char* root_ca PROGMEM = R"EOF(
@@ -64,7 +67,75 @@ emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
 -----END CERTIFICATE-----
 )EOF";
 
-void mqtt(){
+
+
+int temperature , humidity, Light, FAN_A, FAN_B, Motor;
+
+int vri_stt =0 , vri_count = 0;
+char buff[100];
+
+
+TaskHandle_t Task1;  // truyền
+TaskHandle_t Task2;  // nhận
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+   Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+  Serial.println("Initializing...");
+    WiFi.begin(ssid, password);
+  while (WiFi.status()!= WL_CONNECTED)
+  {
+    delay(1000);
+    Serial.println("Kết nối với mạng Wi-Fi...");
+  }
+  Serial.println("Đã kết nối với mạng Wi-Fi.");
+  WiFi.begin(ssid, password);
+  esp_client.setCACert(root_ca);
+  client.setServer(mqtt_server, mqtt_port);
+  MQTT_Connected();
+
+  xTaskCreatePinnedToCore(SendMQTT, (const char*)"TASK_1", 1024, NULL, 1, &Task1, app_cpu);
+  xTaskCreatePinnedToCore(WriteTemp, (const char*)"TASK_2", 1024, NULL, 1, &Task2, app_cpu);
+}
+
+
+void SendMQTT(void *p){
+    while (Serial2.available()) {
+      char receviveChar = Serial2.read();
+      Serial.print(receviveChar);
+          if(receviveChar == '\n'){
+                vri_stt = 1;  
+          }
+          else{
+            buff[vri_count] = receviveChar;
+            vri_count++;
+          }
+          if(vri_stt == 1){
+            sscanf(buff, "%d-%d-%d-%d-%d-%d", &temperature, &humidity, &Light, &FAN_A, &FAN_B, &Motor);
+               data["temperature"] = temperature;
+               data["humidity"]    = humidity;
+               data["Fan_A"]       = FAN_A;
+               data["Fan_B"]       = FAN_B;
+               data["light"]       = Light;
+               data["motor"]       = Motor;
+               String jsonString_2 = JSON.stringify(data);
+              Serial.println(jsonString_2);
+              client.publish("data", jsonString_2.c_str());
+                receviveChar = NULL;
+                vri_stt =0;
+                vri_count = 0;
+                memset(buff, 0, sizeof(buff));
+           }
+      }
+}
+void WriteTemp(void *p){
+    
+}
+
+
+
+void MQTT_Connected(){
     while(!client.connected()){
     Serial.println("Attempting MQTT connection...");
     String clientId = "ESPClient";
@@ -74,59 +145,26 @@ void mqtt(){
     } else {
       Serial.println("Try again.");
     }
-    }
-}
-
-void sensor_2(){
-      temperature = random(70, 80);
-      humidity = random(95, 97);
-      delay(500);
-
-}
-
-void callback(char* topic, byte* payload, unsigned int length){
-      Serial.print("Message arrived on topic: ");
-      Serial.print(topic);
-      Serial.println();
-      if(strstr(topic, "setTemp")){
-           for (int i = 0; i < length; i++) {
-             Serial.print((char)payload[i]); // truyền luôn suống uart nó đang là char
-     
-           }
-            Serial.println();
-      }  
   }
-
-
-void sendMQTT(){
-      data["temperature"] = temperature;
-      data["humidity"] = humidity;
-      data["blower_fan"] = 0;
-      data["exhaust_fan"]= 0;
-      data["lemp"] = 0;
-      String jsonString_2 = JSON.stringify(data);
-      Serial.println(jsonString_2);
-      client.publish("data", jsonString_2.c_str());
 }
-void setup(){
-  Serial.begin(115200);
-  Serial.println("Initializing...");
-  WiFi.begin(ssid, password);
-  while (WiFi.status()!= WL_CONNECTED)
-  {
-    delay(1000);
-    Serial.println("Kết nối với mạng Wi-Fi...");
-  }
-  Serial.println("Đã kết nối với mạng Wi-Fi.");
 
-  esp_client.setCACert(root_ca);
-  client.setServer(mqtt_server, mqtt_port);
-  client.setCallback(callback);
-  mqtt();
+
+
+
+void loop() {
 }
-void loop(){
-    client.loop();
-    sensor_2();
-    sendMQTT();
-    delay(2000);
-} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
