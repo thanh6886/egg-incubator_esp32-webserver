@@ -10,11 +10,7 @@
   #define TXD2 17
 
 
-#if CONFIG_FREERTOS_UNICORE
-static const BaseType_t app_cpu = 0;
-#else
-static const BaseType_t app_cpu = 1;
-#endif
+
 
 
 // const char* ssid = "béthu";
@@ -74,15 +70,11 @@ int temperature , humidity, Light, FAN_A, FAN_B, Motor;
 int vri_stt =0 , vri_count = 0;
 char buff[100];
 
-
-TaskHandle_t Task1;  // truyền
-TaskHandle_t Task2;  // nhận
-
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+   Serial.begin(9600);
    Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
-  Serial.println("Initializing...");
+   Serial.println("Initializing...");
     WiFi.begin(ssid, password);
   while (WiFi.status()!= WL_CONNECTED)
   {
@@ -94,13 +86,10 @@ void setup() {
   esp_client.setCACert(root_ca);
   client.setServer(mqtt_server, mqtt_port);
   MQTT_Connected();
-
-  xTaskCreatePinnedToCore(SendMQTT, (const char*)"TASK_1", 1024, NULL, 1, &Task1, app_cpu);
-  xTaskCreatePinnedToCore(WriteTemp, (const char*)"TASK_2", 1024, NULL, 1, &Task2, app_cpu);
 }
 
 
-void SendMQTT(void *p){
+void SendMQTT(){
     while (Serial2.available()) {
       char receviveChar = Serial2.read();
       Serial.print(receviveChar);
@@ -129,9 +118,7 @@ void SendMQTT(void *p){
            }
       }
 }
-void WriteTemp(void *p){
-    
-}
+
 
 
 
@@ -152,6 +139,8 @@ void MQTT_Connected(){
 
 
 void loop() {
+  client.loop();
+  SendMQTT();
 }
 
 

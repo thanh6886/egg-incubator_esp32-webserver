@@ -15,7 +15,7 @@ char vrc_res[100];
 int vri_count = 0;
 
 char  data[100];
-int R  , T , lux, fan_A  = 1, fan_B = 1, i;
+int R = 10  , T = 10 , lux = 10, fan_A  = 1, fan_B = 1;
 
 
 int main(){
@@ -23,14 +23,10 @@ int main(){
 	
 	while(1){
 		
-//		for(i=0;i<300;i++){
-//		R = i;
-//		T = i;
-//		lux = i;
-//		sprintf(data, "%d-%d-%d-%d-%d\n", T, R, lux, fan_A, fan_B);
-//		uart_SendStr(data);
-//		Delay_ms(1000);
-//		}
+
+		sprintf(data, "%d-%d-%d-%d-%d\n", T, R, lux, fan_A, fan_B);
+		uart_SendStr(data);
+		Delay_ms(1000);	
 
 			
 	}
