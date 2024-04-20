@@ -15,20 +15,19 @@ char vrc_res[100];
 int vri_count = 0;
 
 char  data[100];
-int R = 10  , T = 10 , lux = 10, fan_A  = 1, fan_B = 1;
+int R = 10  , T = 10 , lux = 10, fan_A  = 1, fan_B = 1, motor;
 
 
 int main(){
 	uart_Init();
 	
 	while(1){
-		
-
-		sprintf(data, "%d-%d-%d-%d-%d\n", T, R, lux, fan_A, fan_B);
+		for(motor=0;motor<1000;motor++){
+			
+		sprintf(data, "%d-%d-%d-%d-%d-%d\n", T, R, lux, fan_A, fan_B, motor);
 		uart_SendStr(data);
 		Delay_ms(1000);	
-
-			
+		}
 	}
 }
 
@@ -62,13 +61,14 @@ uint16_t UARTx_Getc(USART_TypeDef* USARTx){
 void USART1_IRQHandler(void) {
  if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) {
         vrc_Getc  =    UARTx_Getc(USART1);	
-				if(vrc_Getc == '\n'){
+				if(vrc_Getc == '!'){
 					vri_stt = 1;
 
 				}
 				else{
 					vrc_res[vri_count] = vrc_Getc;
 					vri_count++;
+					
 				}
 				if(vri_stt == 1){
 					uart_SendStr(vrc_res);

@@ -102,16 +102,9 @@ void task_1(void *pvParameters){
 }
 
 void task_2(void *pvParameters){
+     vTaskDelay(5000 / portTICK_PERIOD_MS);
      while(1){
-      if(client.connected()){
-        sendMQTT();
-      }
-     vTaskDelay(pdMS_TO_TICKS(100));
-  }
-}
-
-void sendMQTT(){
-   while(Serial2.available()) {
+       while(Serial2.available()) {
        char receviveChar = Serial2.read();
        Serial.print(receviveChar);
           if(receviveChar == '\n'){
@@ -138,6 +131,7 @@ void sendMQTT(){
                 memset(buff, 0, sizeof(buff));
            }
       }
+ }
 }
 
 

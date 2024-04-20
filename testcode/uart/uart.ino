@@ -5,7 +5,7 @@
   #define TXD2 17
 char buff[100];
 int vri_stt = 0 , vri_count  = 0;
-int RHI , TCI , lux, fan_A , fan_B ;
+int RHI , TCI , lux, fan_A , fan_B , i;
 
 
 void setup() {
@@ -30,23 +30,18 @@ void loop() {
             vri_count++;
           }
           if(vri_stt == 1){
-            sscanf(buff, "%d-%d-%d-%d-%d", &TCI, &RHI, &lux, &fan_A, &fan_B);
+            sscanf(buff, "%d-%d-%d-%d-%d-%d", &TCI, &RHI, &lux, &fan_A, &fan_B, &i);
               Serial.println(TCI);
               Serial.println(RHI);
               Serial.println(lux);
               Serial.println(fan_A);
               Serial.println(fan_B);
+              Serial.println(i);
                 receviveChar = NULL;
                 vri_stt =0;
                 vri_count = 0;
                memset(buff, 0, sizeof(buff));
            }
-      }
- 
-          Serial2.print("ABC\n");
-          
-          delay(2000);
-    
-   
+      }   
 }
 
