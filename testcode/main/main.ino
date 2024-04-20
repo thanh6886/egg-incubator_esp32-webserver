@@ -98,6 +98,7 @@ void task_1(void *pvParameters){
             
         }
         client.loop();
+        vTaskDelay(pdMS_TO_TICKS(1000));
       }
 }
 
