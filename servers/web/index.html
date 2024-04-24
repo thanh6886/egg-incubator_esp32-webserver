@@ -14,37 +14,38 @@
 
     <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet" />
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"
-      integrity="sha256-xKeoJ50pzbUGkpQxDYHD7o7hxe0LaOGeguUidbq6vis="
-      crossorigin="anonymous"
-    ></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
 
     <link href="./main.css" rel="stylesheet" />
     <title>Document</title>
   </head>
-  <body class="bg-slate-200 p-4">
+  <body class="bg-gray-200 p-4">
     <div class="flex justify-center m-3 text-2xl text-black font-serif">
       <h1>DASHBOARD</h1>
     </div>
     <div class="grid grid-cols-3 gap-4">
       <!--nhiệt độ -->
 
-      <div class="max-w-md bg-red-200 rounded-lg shadow-md overflow-hidden">
+      <div
+        class="max-w-md bg-blue-400 rounded-lg shadow-xl overflow-hidden border border-blue-600"
+      >
         <div class="p-4">
           <!-- Temperature and Humidity Display -->
           <div class="mb-4 grid justify-center">
-            <p class="text-lg font-medium">Nhiệt độ</p>
+            <p class="text-lg font-medium">
+              Nhiệt độ <i class="fas fa-thermometer-half text-red-700 mr-2"></i>
+            </p>
             <div class="flex items-center text-3xl font-semibold">
-              <span id="temp">00</span>
-              <span class="text-gray-500">°C</span>
+              <span id="temp" class="text-red-500">00</span>
+              <span class="text-red-500">°C</span>
             </div>
           </div>
           <!-- Set Temperature Input -->
           <div class="mb-4">
-            <label
-              for="setup"
-              class="block text-sm font-medium text-gray-700 mb-1"
+            <label for="setup" class="block text-sm font-medium text-black mb-1"
               >Setup nhiệt độ</label
             >
             <div class="flex">
@@ -70,7 +71,7 @@
           <div class="mb-4">
             <label
               for="setupTime"
-              class="block text-sm font-medium text-gray-700 mb-1"
+              class="block text-sm font-medium text-black mb-1"
               >Setup thời gian đảo trứng</label
             >
             <div class="flex">
@@ -97,23 +98,29 @@
       </div>
 
       <!-- độ ẩm-->
-      <div class="max-w-md bg-red-200 rounded-lg shadow-md overflow-hidden">
+      <div
+        class="max-w-md bg-blue-400 rounded-lg shadow-xl overflow-hidden border border-blue-600"
+      >
         <div class="p-4">
           <!-- Temperature and Humidity Display -->
           <div class="mb-4 grid justify-center">
-            <p class="text-lg font-medium">Độ ẩm</p>
+            <p class="text-xl font-medium">
+              Độ ẩm <i class="fas fa-tint text-white mr-2"></i>
+            </p>
             <div class="flex items-center text-3xl font-semibold">
-              <span id="hump">50</span>
-              <span class="text-gray-500">%</span>
+              <span id="hump" class="text-red-500">50</span>
+              <span class="text-red-500">%</span>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-4 justify-items-center mt-6">
+          <div class="grid grid-cols-2 gap-4 justify-items-center mt-10">
             <div class="flex items-center">
-              <span class="mr-2">Light:</span>
+              <span class="mr-6 text-xl font-medium">
+                <i class="fas fa-lightbulb text-white mr-2"></i>Light:</span
+              >
               <button
                 id="lightButton"
-                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none transition-all duration-300"
+                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none transition-all duration-300 mr-4"
               >
                 <span
                   class="rounded-full w-4 h-4 bg-black"
@@ -129,7 +136,8 @@
             </div>
 
             <div class="flex items-center">
-              <span class="mr-2">MOTOR:</span>
+              <i class="fas fa-cogs text-white mr-2 text-xl"></i>
+              <span class="mr-2 text-xl font-medium">MOTOR:</span>
               <button
                 class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none transition-all duration-300"
                 id="Motorstatus"
@@ -146,9 +154,11 @@
               </button>
             </div>
             <div class="flex items-center">
-              <span class="mr-2">FAN_A:</span>
+              <span class="mr-2 text-xl font-medium">
+                <i class="fas fa-fan text-white mr-2"></i>FAN_A:</span
+              >
               <button
-                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none"
+                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none mr-4"
                 id="FAN_A_status"
               >
                 <span
@@ -163,9 +173,10 @@
               </button>
             </div>
             <div class="flex items-center">
-              <span class="mr-2">FAN_B:</span>
+              <i class="fas fa-fan text-white mr-2 text-xl"></i>
+              <span class="mr-2 text-xl font-medium">FAN_B:</span>
               <button
-                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none"
+                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none ml-3"
                 id="FAN_B_status"
               >
                 <span
@@ -184,7 +195,9 @@
       </div>
 
       <!-- các thông số-->
-      <div class="max-w-md bg-red-300 rounded-lg shadow-md overflow-hidden">
+      <div
+        class="max-w-md bg-blue-400 rounded-lg shadow-xl overflow-hidden border border-blue-600"
+      >
         <div class="p-4">
           <h1 class="text-xl font-bold mb-2 flex justify-center">
             CÁC THÔNG SỐ ĐÃ SETUP
@@ -192,17 +205,17 @@
           <!-- Temperature and Humidity Display -->
           <div class="mb-4">
             <p class="text-lg">
-              Nhiệt độ setup: <span id="temperature">-- °C</span>
+              Nhiệt độ setup:
+              <span id="temperature" class="text-xl font-medium">-- °C</span>
             </p>
             <p class="text-lg">
-              Thời gian đảo trứng: <span id="_time">-- phút</span>
+              Thời gian đảo trứng:
+              <span id="_time" class="text-xl font-medium">-- phút</span>
             </p>
           </div>
           <!-- Start Date Input -->
           <div class="mb-4">
-            <label
-              for="start-date"
-              class="block text-sm font-medium text-gray-700"
+            <label for="start-date" class="block text-xl font-medium text-black"
               >Tính thời gian đến khi trứng nở</label
             >
             <input

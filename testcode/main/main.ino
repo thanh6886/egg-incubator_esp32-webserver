@@ -95,7 +95,7 @@ void task_1(void *pvParameters){
       if(WiFi.status()!= WL_CONNECTED){
         WiFi.begin(ssid, password);
          while (WiFi.status()!= WL_CONNECTED){
-         delay(1000);
+         delay(3000);
          Serial.println("Kết nối với mạng Wi-Fi...");
         }
         Serial.println("Đã kết nối với mạng Wi-Fi.");

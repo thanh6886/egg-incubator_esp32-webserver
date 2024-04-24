@@ -44,38 +44,38 @@ function fetchData() {
 b = 1;
 if (b == 1) {
   lightOff.classList.toggle("hidden");
-  lightButton.classList.toggle("bg-green-300");
+  lightButton.classList.toggle("bg-green-400");
   lightOn.classList.toggle("hidden");
 } else {
   lightOff.classList.remove("hidden");
-  lightButton.classList.remove("bg-green-300");
+  lightButton.classList.remove("bg-green-400");
 }
 
 if (b == 1) {
   motorOFF.classList.toggle("hidden");
-  Motorstatus.classList.toggle("bg-green-300");
+  Motorstatus.classList.toggle("bg-green-400");
   motorON.classList.toggle("hidden");
 } else {
   motorOFF.classList.remove("hidden");
-  Motorstatus.classList.remove("bg-green-300");
+  Motorstatus.classList.remove("bg-green-400");
 }
 
 if (b == 1) {
   FAN_A_OFF.classList.toggle("hidden");
-  FAN_A_status.classList.toggle("bg-green-300");
+  FAN_A_status.classList.toggle("bg-green-400");
   FAN_A_ON.classList.toggle("hidden");
 } else {
   FAN_A_OFF.classList.remove("hidden");
-  FAN_A_status.classList.remove("bg-green-300");
+  FAN_A_status.classList.remove("bg-green-400");
 }
 
 if (b == 1) {
   FAN_B_OFF.classList.toggle("hidden");
-  FAN_B_status.classList.toggle("bg-green-300");
+  FAN_B_status.classList.toggle("bg-green-400");
   FAN_B_ON.classList.toggle("hidden");
 } else {
   FAN_B_OFF.classList.remove("hidden");
-  FAN_B_status.classList.remove("bg-green-300");
+  FAN_B_status.classList.remove("bg-green-400");
 }
 function setApiTemp(value) {
   const options = {
