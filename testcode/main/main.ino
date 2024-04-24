@@ -92,6 +92,15 @@ void task_1(void *pvParameters){
    client.setServer(mqtt_server, mqtt_port);
    client.setCallback(callback);
       while(1){
+      if(WiFi.status()!= WL_CONNECTED){
+        WiFi.begin(ssid, password);
+         while (WiFi.status()!= WL_CONNECTED){
+         delay(1000);
+         Serial.println("Kết nối với mạng Wi-Fi...");
+        }
+        Serial.println("Đã kết nối với mạng Wi-Fi.");
+      }
+
       if(!client.connected()){
             MQTT_Connected();
             delay(200);
@@ -149,10 +158,13 @@ void MQTT_Connected(){
     if (client.connect(clientId.c_str(), mqtt_username, mqtt_password)) {
       Serial.println("Connected.");
       client.subscribe("setTemp");
+      client.subscribe("Motor");
     } else {
       Serial.println("Try again.");
     }
   }
+
+
 
 void callback(char* topic, byte* payload, unsigned int length){
       Serial.print("Message arrived on topic: ");
@@ -164,11 +176,24 @@ void callback(char* topic, byte* payload, unsigned int length){
              Serial.print((char)payload[i]);
              a += (char)payload[i];
            }
-           a += "!";
+           a += "T";
            Serial2.print(a);
             a ="";
            Serial.println();
-      }  
+      }
+      
+      if(strstr(topic, "Motor")){
+          String a ="";
+           for (int i = 0; i < length; i++) {
+             Serial.print((char)payload[i]);
+             a += (char)payload[i];
+           }
+           a += "M";
+           Serial2.print(a);
+            a ="";
+           Serial.println();
+      }
+        
   }
 
 

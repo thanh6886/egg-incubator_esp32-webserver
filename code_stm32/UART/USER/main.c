@@ -61,9 +61,12 @@ uint16_t UARTx_Getc(USART_TypeDef* USARTx){
 void USART1_IRQHandler(void) {
  if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) {
         vrc_Getc  =    UARTx_Getc(USART1);	
-				if(vrc_Getc == '!'){
+				if(vrc_Getc == 'T'){
 					vri_stt = 1;
 
+				}
+				if(vrc_Getc == 'M'){
+					vri_stt = 2;
 				}
 				else{
 					vrc_res[vri_count] = vrc_Getc;
@@ -76,6 +79,13 @@ void USART1_IRQHandler(void) {
 					vri_count = 0;
 					vri_stt = 0;
 				}
+				if(vri_stt == 2){
+					uart_SendStr(vrc_res);
+					vrc_res[vri_count] = NULL;
+					vri_count = 0;
+					vri_stt = 0;
+				}
+				
 		}
  }
 

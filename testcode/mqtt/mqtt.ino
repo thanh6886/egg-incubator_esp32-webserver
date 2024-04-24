@@ -20,7 +20,7 @@ const int mqtt_port = 8883;
 
 
 
-int temperature , humidity;
+int temperature , humidity, a;
 int relay;
 
 
@@ -80,6 +80,7 @@ void mqtt(){
 void sensor_2(){
       temperature = random(70, 80);
       humidity = random(95, 97);
+      a = random(1, 10);
       delay(500);
 
 }
@@ -101,9 +102,10 @@ void callback(char* topic, byte* payload, unsigned int length){
 void sendMQTT(){
       data["temperature"] = temperature;
       data["humidity"] = humidity;
-      data["blower_fan"] = 0;
-      data["exhaust_fan"]= 0;
-      data["lemp"] = 0;
+      data["Light"] = a ;
+      data["FAN_A"] = a;
+      data["FAN_B"]= a;
+      data["Motor"] = 0;
       String jsonString_2 = JSON.stringify(data);
       Serial.println(jsonString_2);
       client.publish("data", jsonString_2.c_str());
@@ -130,3 +132,9 @@ void loop(){
     sendMQTT();
     delay(2000);
 } 
+
+
+for
+
+
+

@@ -1,0 +1,12 @@
+CREATE DATABASE mqtt_esp32;
+
+CREATE TABLE esp32 (
+    id  INT AUTO_INCREMENT PRIMARY KEY,
+    datetime TIMESTAMP NOT NULL,
+    temperature INT NOT NULL,
+    humidity INT NOT NULL,
+    Light INT NOT NULL,
+    FAN_A INT NOT NULL,
+    FAN_B INT NOT NULL,
+    Motor INT NOT NULL,
+);
