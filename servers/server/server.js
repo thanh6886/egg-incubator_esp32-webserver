@@ -6,6 +6,12 @@ const bodyParser = require("body-parser");
 
 // Sử dụng bodyParser để phân tích dữ liệu JSON từ yêu cầu
 
+const DataMysql = mysql.createConnection({
+  host: "127.0.0.1",
+  user: "root",
+  password: "",
+  database: "mqtt_esp32",
+});
 const option = {
   host: "5becba34c368460ba7657c804a6e4eed.s2.eu.hivemq.cloud",
   username: "bé_thu",
@@ -13,13 +19,6 @@ const option = {
   port: 8883,
   protocol: "mqtts",
 };
-
-const DataMysql = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "",
-  database: "mqtt_esp32",
-});
 
 const app = express();
 app.use(cors());

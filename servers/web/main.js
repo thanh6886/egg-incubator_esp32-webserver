@@ -34,49 +34,34 @@ function fetchData() {
     })
     .then((data) => {
       console.log(data);
-      let datalenght = data.data.length - 1;
-      temp.innerText = data.data[datalenght].temperature;
-      hump.innerText = data.data[datalenght].humidity;
+      let datalength = data.data.length - 1;
+      temp.innerText = data.data[datalength].temperature;
+      hump.innerText = data.data[datalength].humidity;
+      addData(
+        data.data[datalength].temperature,
+        data.data[datalength].humidity
+      );
+
+      updateStatus("lightStatus", data.data[datalength].Light);
+      updateStatus("motorStatus", data.data[datalength].Motor);
+      updateStatus("FAN_A_Status", data.data[datalength].FAN_A);
+      updateStatus("FAN_B_Status", data.data[datalength].FAN_B);
     });
 }
-// setInterval(fetchData, 2000);
-
-b = 1;
-if (b == 1) {
-  lightOff.classList.toggle("hidden");
-  lightButton.classList.toggle("bg-green-400");
-  lightOn.classList.toggle("hidden");
-} else {
-  lightOff.classList.remove("hidden");
-  lightButton.classList.remove("bg-green-400");
+function updateStatus(elementId, status) {
+  const element = document.getElementById(elementId);
+  if (status === 1) {
+    element.textContent = "ON";
+    element.classList.remove("text-red-600");
+    element.classList.add("text-green-600");
+  } else {
+    element.textContent = "OFF";
+    element.classList.remove("text-green-600");
+    element.classList.add("text-red-600");
+  }
 }
+setInterval(fetchData, 1000);
 
-if (b == 1) {
-  motorOFF.classList.toggle("hidden");
-  Motorstatus.classList.toggle("bg-green-400");
-  motorON.classList.toggle("hidden");
-} else {
-  motorOFF.classList.remove("hidden");
-  Motorstatus.classList.remove("bg-green-400");
-}
-
-if (b == 1) {
-  FAN_A_OFF.classList.toggle("hidden");
-  FAN_A_status.classList.toggle("bg-green-400");
-  FAN_A_ON.classList.toggle("hidden");
-} else {
-  FAN_A_OFF.classList.remove("hidden");
-  FAN_A_status.classList.remove("bg-green-400");
-}
-
-if (b == 1) {
-  FAN_B_OFF.classList.toggle("hidden");
-  FAN_B_status.classList.toggle("bg-green-400");
-  FAN_B_ON.classList.toggle("hidden");
-} else {
-  FAN_B_OFF.classList.remove("hidden");
-  FAN_B_status.classList.remove("bg-green-400");
-}
 function setApiTemp(value) {
   const options = {
     method: "POST",
@@ -122,7 +107,19 @@ submitTemp.addEventListener("click", (e) => {
     setupTemp.value = "";
   } else {
     e.preventDefault();
-    alert("Vui lòng nhập giá trị từ 0 đến 100");
+    Toastify({
+      text: "Vui lòng nhập giá trị từ 0 đến 100",
+      style: {
+        background: "linear-gradient(to right, #ff416c, #ff4b2b)",
+      },
+
+      duration: 3000, // Thời gian hiển thị (ms)
+      newWindow: true, // Mở toast trong cửa sổ mới
+      close: true, // Hiển thị nút đóng toast
+      gravity: "top", // Vị trí hiển thị toast
+      position: "end", // Canh lề của toast
+    }).showToast();
+    setupTemp.value = null;
   }
 });
 
@@ -137,8 +134,20 @@ submitsetupTime.addEventListener("click", (e) => {
     setupTime.value = "";
   } else {
     e.preventDefault();
-    alert("Vui lòng nhập giá trị từ 0 đến 100");
+
+    Toastify({
+      text: "Vui lòng nhập giá trị từ 0 đến 100",
+      style: {
+        background: "linear-gradient(to right, #ff416c, #ff4b2b)",
+      },
+      duration: 3000, // Thời gian hiển thị (ms)
+      newWindow: true, // Mở toast trong cửa sổ mới
+      close: true, // Hiển thị nút đóng toast
+      gravity: "top", // Vị trí hiển thị toast
+      position: "end", // Canh lề của toast
+    }).showToast();
   }
+  setupTime.value = null;
 });
 
 function daysBetween(startDate, endDate) {
@@ -170,4 +179,87 @@ if (
   _date.textContent = `Số ngày còn lại: ${a} ngày`;
   setup_temperature.innerText = `${localStorage.getItem("setuptemp")} °C`;
   _time.innerText = `${localStorage.getItem("setupTime")} phút`;
+}
+
+// Initialize empty arrays to store labels and data values
+const labels = [],
+  labels_1 = [];
+const dataValues = [],
+  dataValues_1 = [];
+
+// Initialize the Chart.js instance
+const myChart = new Chart(document.getElementById("chartjs-0"), {
+  type: "line",
+  data: {
+    labels: labels,
+    datasets: [
+      {
+        label: "nhiệt độ ",
+        data: dataValues,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        lineTension: 0.1,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  },
+});
+
+// Function to add new data
+
+const myChart_2 = new Chart(document.getElementById("chartjs-1"), {
+  type: "line",
+  data: {
+    labels: labels_1,
+    datasets: [
+      {
+        label: "độ ẩm ",
+        data: dataValues_1,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        lineTension: 0.1,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  },
+});
+
+function addData(value, value_1) {
+  // Add current timestamp as label
+  const currentTime = new Date();
+  labels.push(currentTime.toLocaleTimeString());
+  labels_1.push(currentTime.toLocaleTimeString());
+  // Add the provided value to dataValues
+  dataValues.push(value);
+  dataValues_1.push(value_1);
+
+  // Limit the number of data points displayed on the chart
+  const maxDataPoints = 30;
+  if (labels.length > maxDataPoints) {
+    labels.shift();
+    dataValues.shift();
+    labels_1.shift();
+    dataValues_1.shift();
+  }
+
+  // Update chart data
+  myChart.data.labels = labels.slice(); // Create a copy of labels array
+  myChart.data.datasets[0].data = dataValues.slice(); // Create a copy of dataValues array
+  myChart_2.data.labels_1 = labels_1.slice();
+  myChart_2.data.datasets[0].data = dataValues_1.slice();
+  // Update the chart
+  myChart.update();
+  myChart_2.update();
 }

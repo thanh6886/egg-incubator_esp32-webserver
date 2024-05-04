@@ -12,10 +12,10 @@
 
 
 
-// const char* ssid = "béthu";
-// const char* password = "88888888";
-const char* ssid = "TP-LINK_E481B4";
-const char* password = "94902518";
+const char* ssid = "béthu";
+const char* password = "88888888";
+// const char* ssid = "TP-LINK_E481B4";
+// const char* password = "94902518";
 
 const char* mqtt_server = "5becba34c368460ba7657c804a6e4eed.s2.eu.hivemq.cloud";
 const char* mqtt_username = "bé_thu";
@@ -135,10 +135,10 @@ void sendMQTT(){
             sscanf(buff, "%d-%d-%d-%d-%d-%d", &temperature, &humidity, &Light, &FAN_A, &FAN_B, &Motor);
                data["temperature"] = temperature;
                data["humidity"]    = humidity;
-               data["Fan_A"]       = FAN_A;
-               data["Fan_B"]       = FAN_B;
-               data["light"]       = Light;
-               data["motor"]       = Motor;
+               data["Light"]       = Light;
+               data["FAN_A"]       = FAN_A;
+               data["FAN_B"]       = FAN_B;
+               data["Motor"]       = Motor;
                String jsonString_2 = JSON.stringify(data);
               Serial.println(jsonString_2);
               client.publish("data", jsonString_2.c_str());

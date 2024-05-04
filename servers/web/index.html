@@ -18,11 +18,20 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
       rel="stylesheet"
     />
-
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="./main.css" rel="stylesheet" />
     <title>Document</title>
   </head>
-  <body class="bg-gray-200 p-4">
+  <body class="bg-white p-4">
     <div class="flex justify-center m-3 text-2xl text-black font-serif">
       <h1>DASHBOARD</h1>
     </div>
@@ -30,19 +39,21 @@
       <!--nhiệt độ -->
 
       <div
-        class="max-w-md bg-blue-400 rounded-lg shadow-xl overflow-hidden border border-blue-600"
+        class="max-w-md overflow-hidden bg-white border-transparent rounded-lg shadow-xl"
       >
+        <div
+          class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2 flex justify-center"
+        >
+          <p class="text-xl font-bold uppercase text-gray-600">
+            Nhiệt độ <i class="fas fa-thermometer-half text-red-700 mr-2"></i>
+          </p>
+        </div>
+        <div class="flex justify-center text-3xl font-semibold mt-2">
+          <span id="temp" class="text-red-500">00</span>
+          <span class="text-red-500 ml-1">°C</span>
+        </div>
+
         <div class="p-4">
-          <!-- Temperature and Humidity Display -->
-          <div class="mb-4 grid justify-center">
-            <p class="text-lg font-medium">
-              Nhiệt độ <i class="fas fa-thermometer-half text-red-700 mr-2"></i>
-            </p>
-            <div class="flex items-center text-3xl font-semibold">
-              <span id="temp" class="text-red-500">00</span>
-              <span class="text-red-500">°C</span>
-            </div>
-          </div>
           <!-- Set Temperature Input -->
           <div class="mb-4">
             <label for="setup" class="block text-sm font-medium text-black mb-1"
@@ -99,143 +110,161 @@
 
       <!-- độ ẩm-->
       <div
-        class="max-w-md bg-blue-400 rounded-lg shadow-xl overflow-hidden border border-blue-600"
+        class="max-w-md overflow-hidden bg-white border-transparent rounded-lg shadow-xl"
       >
-        <div class="p-4">
-          <!-- Temperature and Humidity Display -->
-          <div class="mb-4 grid justify-center">
-            <p class="text-xl font-medium">
-              Độ ẩm <i class="fas fa-tint text-white mr-2"></i>
-            </p>
-            <div class="flex items-center text-3xl font-semibold">
-              <span id="hump" class="text-red-500">50</span>
-              <span class="text-red-500">%</span>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 justify-items-center mt-10">
+        <div
+          class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2 flex justify-center"
+        >
+          <p class="text-xl font-bold uppercase text-gray-600">
+            Độ ẩm <i class="fas fa-tint text-blue-700"></i>
+          </p>
+        </div>
+        <div class="flex justify-center text-3xl font-semibold mt-2">
+          <span id="hump" class="text-blue-500">50</span>
+          <span class="text-blue-500 ml-1">%</span>
+        </div>
+        <!-- Temperature and Humidity Display -->
+        <div class="m-2 grid justify-center">
+          <div class="grid grid-cols-2 gap-4 justify-end mt-7">
             <div class="flex items-center">
               <span class="mr-6 text-xl font-medium">
-                <i class="fas fa-lightbulb text-white mr-2"></i>Light:</span
+                <i class="fas fa-lightbulb text-green-400 mr-3"></i>Light:</span
               >
-              <button
-                id="lightButton"
-                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none transition-all duration-300 mr-4"
-              >
-                <span
-                  class="rounded-full w-4 h-4 bg-black"
-                  id="LightOFF"
-                ></span>
-                <!-- Light Off -->
-                <span
-                  class="rounded-full w-4 h-4 bg-white shadow-md transform transition-transform translate-x-6 hidden"
-                  id="LightON"
-                ></span>
-                <!-- Light On -->
-              </button>
+              <span id="lightStatus" class="status text-xl font-medium"></span>
             </div>
 
             <div class="flex items-center">
-              <i class="fas fa-cogs text-white mr-2 text-xl"></i>
+              <i class="fas fa-cogs text-green-400 mr-2 text-xl"></i>
               <span class="mr-2 text-xl font-medium">MOTOR:</span>
-              <button
-                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none transition-all duration-300"
-                id="Motorstatus"
-              >
-                <span
-                  class="rounded-full w-4 h-4 bg-black"
-                  id="motorOFF"
-                ></span>
-                <!--hidden-->
-                <span
-                  class="rounded-full w-4 h-4 bg-white shadow-md transform transition-transform translate-x-6 hidden"
-                  id="motorON"
-                ></span>
-              </button>
+              <span id="motorStatus" class="status text-xl font-medium"></span>
             </div>
-            <div class="flex items-center">
-              <span class="mr-2 text-xl font-medium">
-                <i class="fas fa-fan text-white mr-2"></i>FAN_A:</span
+            <div class="flex items-center mt-4">
+              <span class="mr-3 text-xl font-medium">
+                <i class="fas fa-fan text-green-400 mr-2"></i>FAN_A:</span
               >
-              <button
-                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none mr-4"
-                id="FAN_A_status"
-              >
-                <span
-                  class="rounded-full w-4 h-4 bg-black"
-                  id="FAN_A_OFF"
-                ></span>
-                <!--hidden-->
-                <span
-                  class="rounded-full w-4 h-4 bg-white shadow-md transform transition-transform translate-x-6 hidden"
-                  id="FAN_A_ON"
-                ></span>
-              </button>
+              <span id="FAN_A_Status" class="status text-xl font-medium"></span>
             </div>
-            <div class="flex items-center">
-              <i class="fas fa-fan text-white mr-2 text-xl"></i>
-              <span class="mr-2 text-xl font-medium">FAN_B:</span>
-              <button
-                class="rounded-full w-12 h-6 flex items-center justify-between bg-gray-200 p-1 focus:outline-none ml-3"
-                id="FAN_B_status"
-              >
-                <span
-                  class="rounded-full w-4 h-4 bg-black"
-                  id="FAN_B_OFF"
-                ></span>
-                <!--hidden-->
-                <span
-                  class="rounded-full w-4 h-4 bg-white shadow-md transform transition-transform translate-x-6 hidden"
-                  id="FAN_B_ON"
-                ></span>
-              </button>
+            <div class="flex items-center mt-4">
+              <i class="fas fa-fan text-green-400 mr-3 text-xl"></i>
+              <span class="mr-4 text-xl font-medium">FAN_B:</span>
+              <span
+                id="FAN_B_Status"
+                class="status ml-2 text-xl font-medium"
+              ></span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- các thông số-->
+
       <div
-        class="max-w-md bg-blue-400 rounded-lg shadow-xl overflow-hidden border border-blue-600"
+        class="max-w-md overflow-hidden bg-white border-transparent rounded-lg shadow-xl"
       >
-        <div class="p-4">
-          <h1 class="text-xl font-bold mb-2 flex justify-center">
+        <div
+          class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2"
+        >
+          <h5
+            class="font-bold uppercase text-gray-600 flex justify-center text-xl"
+          >
             CÁC THÔNG SỐ ĐÃ SETUP
-          </h1>
-          <!-- Temperature and Humidity Display -->
-          <div class="mb-4">
-            <p class="text-lg">
-              Nhiệt độ setup:
-              <span id="temperature" class="text-xl font-medium">-- °C</span>
-            </p>
-            <p class="text-lg">
-              Thời gian đảo trứng:
-              <span id="_time" class="text-xl font-medium">-- phút</span>
-            </p>
-          </div>
-          <!-- Start Date Input -->
-          <div class="mb-4">
-            <label for="start-date" class="block text-xl font-medium text-black"
-              >Tính thời gian đến khi trứng nở</label
-            >
+          </h5>
+        </div>
+        <div class="mt-3">
+          <p class="text-lg mt-2 flex justify-center">
+            Nhiệt độ setup:
+            <span id="temperature" class="text-xl font-medium ml-1">-- °C</span>
+          </p>
+          <p class="text-lg mt-2 flex justify-center">
+            Thời gian đảo trứng:
+            <span id="_time" class="text-xl font-medium ml-1">-- phút</span>
+          </p>
+        </div>
+        <div class="mt-1">
+          <label
+            for="start-date"
+            class="text-xl font-medium text-black flex justify-center"
+            >Tính thời gian đến khi trứng nở</label
+          >
+          <div class="flex justify-center mt-2">
             <input
               type="date"
               id="start-date"
               name="start-date"
-              class="mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full"
+              class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-11/12"
             />
           </div>
-          <div class="flex justify-center text-xl" id="_date">
-            Số ngày còn lại: --
-          </div>
+        </div>
+        <div class="flex justify-center text-xl mt-1" id="_date">
+          Số ngày còn lại: --
         </div>
       </div>
     </div>
-    <div class="flex justify-around">
-      <div>Biểu đồ 1</div>
-      <div>Biểu đồ 2</div>
+    <div class="flex pt-3 justify-evenly m-4">
+      <div class="p-2 rounded-full">
+        <div class="bg-white border-transparent rounded-lg shadow-xl">
+          <div
+            class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2"
+          >
+            <h5 class="font-bold uppercase text-gray-600 flex justify-center">
+              ĐỘ ẨM
+            </h5>
+          </div>
+          <canvas id="chartjs-0" width="600" height="400"></canvas>
+        </div>
+      </div>
+
+      <div class="p-2 rounded-full">
+        <div class="bg-white border-transparent rounded-lg shadow-xl">
+          <div
+            class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2"
+          >
+            <h5 class="font-bold uppercase text-gray-600 flex justify-center">
+              ĐỘ ẨM
+            </h5>
+          </div>
+          <canvas id="chartjs-1" width="600" height="400"></canvas>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-center">Hướng dẫn setup</div>
-    <script src="./main.js"></script>
+    <div
+      class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2"
+    >
+      <h1 class="flex justify-center pt-3 text-2xl">Hướng dẫn setup</h1>
+    </div>
+    <div class="flex justify-center bg-white">
+      <div class="text-xl mt-2">
+        -- Thời gian ấp trứng gà bằng máy nở là 19-21 ngày. Ấp bằng máy hay bằng
+        bằng gà mái thì số ngày nở không thay đổi vẫn phải theo quy luật của tự
+        nhiên. Chỉ khác là gà mái thì ấp trứng theo bản năng nên tỷ lệ nở có cao
+        hay không phụ thuộc vào từng khả năng ấp trứng của con mái. Hoặc ảnh
+        hưởng từ thời tiết quá nóng hoặc quá lạnh làm giảm tỷ lệ nở.
+        <br />
+        -- Còn máy ấp trứng thì nhiệt độ trong lò ấp luôn được đảm bảo, nhiệt độ
+        cao máy sẽ tự động giảm, nhiệt độ thấp sẽ tăng nhiệt để đảm bảo máy luôn
+        ổn định. Và khay đảo trứng tự động đảo 12 lần 1 ngày giúp trứng phát
+        triển tốt nhất. Chính vì thế tỷ lệ ấp nở bằng máy ấp trứng rất cao, tiết
+        kiệm thời gian và công sức chăn nuôi.
+        <br />
+        Lưu ý về nhiệt độ và độ ẩm khi ấp trứng Nhiệt độ và độ ẩm là hai yếu tố
+        đóng vai trò rất quan trọng trong quá trình ấp trứng. Trứng phát triển
+        theo các giai đoạn khác nhau và mỗi giai đoạn trứng yêu cầu nhiệt độ và
+        độ ẩm khác nhau, cụ thể như:
+        <br />
+        - Giai đoạn đầu (1-7 ngày): nhiệt độ ấp thích hợp là 39 độ C và độ ẩm
+        khoảng 65%. <br />
+        - Giai đoạn 2 (8-18 ngày): nhiệt độ ấp thích hợp là 37 độ C, độ ẩm thích
+        hợp là 55%.
+        <br />- Giai đoạn 3 (18 ngày đến khi trứng nở): nhiệt độ phù hợp để ấp
+        là 36 độ C và độ ẩm là 60%. <br />
+        Cách ấp trứng bằng máy ấp trứng thì các anh em nên cài đặt nhiệt độ ấp ở
+        khoảng 37,5 độ C và độ ẩm trong khoảng 55 – 65%.
+      </div>
+    </div>
+    <div
+      class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2 mt-1"
+    ></div>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./main.js"></script>
 </html>

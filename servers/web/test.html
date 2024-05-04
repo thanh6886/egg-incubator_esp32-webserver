@@ -3,45 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Temperature Chart</title>
+    <title>Temperature Measurement</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS tùy chỉnh */
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
-  <body>
-    <canvas id="temperatureChart" width="400" height="200"></canvas>
+  <body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+      <h1 class="text-2xl font-bold mb-4">Temperature Measurement</h1>
+      <div id="temperatureDisplay" class="mb-4"></div>
+      <button
+        id="startButton"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Start
+      </button>
+      <canvas
+        id="temperatureChart"
+        class="mt-8"
+        width="400"
+        height="200"
+      ></canvas>
+    </div>
 
     <script>
-      // Lấy tham chiếu đến canvas element
-      var ctx = document.getElementById("temperatureChart").getContext("2d");
+      // Định nghĩa một hàm để lấy mẫu nhiệt độ
+      function getTemperatureSample() {
+        // Giả lập việc lấy dữ liệu nhiệt độ từ cảm biến hoặc API
+        return Math.random() * 100; // Giả định dữ liệu từ 0 đến 100
+      }
 
-      // Khởi tạo dữ liệu cho đồ thị
-      var data = {
-        labels: ["1", "2", "3", "4", "5", "6"],
-        datasets: [
-          {
-            label: "Temperature",
-            data: [20, 21, 22, 23, 24, 25], // Giả sử dữ liệu nhiệt độ
-            backgroundColor: "rgba(255, 99, 132, 0.2)", // Màu nền cho đồ thị
-            borderColor: "rgba(255, 99, 132, 1)", // Màu viền cho đồ thị
-            borderWidth: 1, // Độ rộng của viền
-          },
-        ],
-      };
-
-      // Cấu hình các tùy chọn cho đồ thị
-      var options = {
-        scales: {
-          y: {
-            beginAtZero: true, // Bắt đầu trục y từ giá trị 0
-          },
-        },
-      };
-
-      // Tạo đối tượng biểu đồ với dữ liệu và tùy chọn đã cấu hình
-      var temperatureChart = new Chart(ctx, {
-        type: "line", // Loại biểu đồ
-        data: data, // Dữ liệu biểu đồ
-        options: options, // Các tùy chọn
-      });
+      // Thêm sự kiện click cho nút "Start"
+      document
+        .getElementById("startButton")
+        .addEventListener("click", function () {
+          const temperatureDisplay =
+            document.getElementById("temperatureDisplay");
+          temperatureDisplay.innerHTML = ""; // Xóa bất kỳ dữ liệu nhiệt độ hiện có nào
+        });
     </script>
   </body>
 </html>
